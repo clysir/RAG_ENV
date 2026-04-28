@@ -2,15 +2,19 @@
 这个用来连接mysql数据库 并获取session对象
 """
 
-from sqlalchemy.ext.asyncio import create_async_engine,async_sessionmaker,AsyncSession
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+    AsyncSession
+)
 from backend.config.cfg import settings
-ASYNC_ENGINE_URL = settings.DATABASE_URL
 
+ASYNC_ENGINE_URL = settings.DATABASE_URL
 
 # 创建异步引擎
 async_engine = create_async_engine(
     ASYNC_ENGINE_URL,
-    echo = True # 用于在终端 同步显示 数据库里面的数据
+    echo = False # 用于在终端 同步显示 数据库里面的数据
 )
 
 

@@ -1,5 +1,9 @@
 import bcrypt
-from datetime import datetime, timedelta, timezone
+from datetime import (
+    datetime, 
+    timedelta, 
+    timezone
+)
 import jwt  
 from fastapi.security import OAuth2PasswordBearer
 from backend.config.cfg import settings 

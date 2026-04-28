@@ -1,4 +1,9 @@
-from pydantic import BaseModel,EmailStr,field_validator,ConfigDict
+from pydantic import (
+    BaseModel,
+    EmailStr,
+    field_validator,
+    ConfigDict
+)
 from datetime import datetime
 
 # User基础的类型 

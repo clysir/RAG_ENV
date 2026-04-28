@@ -1,14 +1,28 @@
-from fastapi import Depends,HTTPException,status
+from fastapi import (
+    Depends,
+    HTTPException,
+    status
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.db.my_sql.connect import get_db
 from backend.schemas.user import UserCreate
 from backend.models.user import User
 from backend.app.v1.auth.crud import UserCrud
-from backend.core.security import password_hash,password_verify,create_access_token,oauth2_scheme
+from backend.core.security import (
+    password_hash,
+    password_verify,
+    create_access_token,
+    oauth2_scheme
+)
 from datetime import timedelta
-from typing import Any, Dict
+from typing import (
+    Any, 
+    Dict
+)
 import jwt
 from backend.config.cfg import settings
+
+
 async def user_register(user_in : UserCreate, db: AsyncSession) -> User:
     """
         用户注册处理函数

@@ -3,7 +3,10 @@ from backend.models.knowledge import Knowledge
 from typing import List
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
-from fastapi import HTTPException,status
+from fastapi import (
+    HTTPException,
+    status
+)
 class KbCrud:
 
     def __init__(self, db: AsyncSession) -> None:

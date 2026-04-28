@@ -5,3 +5,5 @@
 
 *.log
 minio
+
+data/

@@ -1,5 +1,12 @@
-from sqlalchemy.orm import DeclarativeBase,Mapped,mapped_column
-from sqlalchemy import DateTime,func,Integer,String,ForeignKey
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    mapped_column
+)
+from sqlalchemy import (
+    DateTime,
+    func
+)
 from datetime import datetime
 
 

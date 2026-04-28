@@ -3,7 +3,7 @@ from .base import Base
 from .user import User
 from .knowledge import Knowledge
 from .documents import Documents
-
+from .document_chunks import DocumentChunk
 """
 cly --- 26.4.23 -- 22:20 
     我当前先建 5张表

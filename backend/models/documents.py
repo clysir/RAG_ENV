@@ -1,5 +1,13 @@
-from sqlalchemy.orm import Mapped,mapped_column,relationship
-from sqlalchemy import Integer,String,ForeignKey
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+    relationship
+)
+from sqlalchemy import (
+    Integer,
+    String,
+    ForeignKey
+)
 from backend.models.base import Base
 
 class Documents(Base):
@@ -18,3 +26,9 @@ class Documents(Base):
     knowledge: Mapped["Knowledge"] = relationship(
         "Knowledge", 
         back_populates = "documents") 
+
+    chunks: Mapped[list["DocumentChunk"]] = relationship(
+        "DocumentChunk",
+        back_populates = "document",
+        cascade = "all, delete-orphan"
+    )

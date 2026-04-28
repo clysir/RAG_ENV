@@ -1,4 +1,8 @@
-from pydantic import BaseModel,ConfigDict,Field
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field
+)
 from datetime import datetime
 from typing import List
 from backend.schemas.documents import DocumentsResponse
