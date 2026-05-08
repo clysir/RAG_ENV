@@ -7,3 +7,5 @@
 minio
 
 data/
+
+__pycache__/
