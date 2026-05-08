@@ -4,13 +4,18 @@ from fastapi import (
 )
 from backend.schemas.chat import (
     QueryResponse,
-    QueryRequest
+    QueryRequest,
+    ChatResponse,
+    ChatRequest
 ) 
 from backend.db.my_sql.connect import get_db
 from backend.app.v1.auth.service import get_current_user
 from backend.models.user import User
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.app.chat.service import query_kb
+from backend.app.chat.service import (
+    query_kb,
+    chat_kb
+)
 
 chat_router = APIRouter(prefix = "/api/knowledge_base", tags = ["chat"])
 
@@ -22,3 +27,13 @@ async def query_kb_endpoint(
     db: AsyncSession = Depends(get_db)
 ):
     return await query_kb(kb_id, req, cur_user.id, db)
+
+
+@chat_router.post("/{kb_id}/chat", response_model = ChatResponse)
+async def chat_kb_endpoint(
+    kb_id: int,
+    req: ChatRequest,
+    cur_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    return await chat_kb(kb_id, req, cur_user.id, db)
