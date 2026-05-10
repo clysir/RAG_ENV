@@ -14,8 +14,8 @@ from backend.app.document.process import (
     delete_vectors_from_store,
 )
 from backend.db.my_sql.connect import async_session
+from backend.config.cfg import settings
 
-TEST_MAX_CHUNKS = 3
 
 
 async def run_process_document_task(
@@ -38,12 +38,10 @@ async def run_process_document_task(
             # 防御性编程 防止用户提交文档之后 在处理过程中 又把之前的文档给删了
             doc = await DocCrud(db).get_doc_by_id(doc_id)
             if not doc:
-                #raise HTTPException(status_code = 404, detail = f"文档(ID:{doc.id})不存在")
                 print(f"文档(ID:{doc.id})不存在")
                 return
             
             if doc.knowledge_base_id != kb_id:
-                #raise HTTPException(status_code = 400, detail = f"文档不属于当前知识库")
                 print(f"文档不属于当前知识库")
                 doc.status = "failed"
                 await db.commit()
@@ -69,8 +67,8 @@ async def run_process_document_task(
             print(f"原始chunk数量为: {original_chunk_cout}")
 
             # Test模式 只处理前3个chunk
-            if TEST_MAX_CHUNKS is not None:
-                processed_result.chunks = processed_result.chunks[:TEST_MAX_CHUNKS]
+            if settings.ingest_max_chunks is not None:
+                processed_result.chunks = processed_result.chunks[:settings.ingest_max_chunks]
                 print(f">>> 当前为测试模式，只处理{len(processed_result.chunks)}个chunk")
 
             chunk_crud = ChunkCrud(db)

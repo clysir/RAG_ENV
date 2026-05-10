@@ -99,7 +99,10 @@ async def chat_kb(
     """
     kb = await KbCrud(db).get_owned_kb(user_id, kb_id)
     if not kb:
-        raise HTTPException(status_code=404, detail=f"知识库(ID: {kb_id})不存在或您无权限访问")
+        raise HTTPException(
+            status_code=404, 
+            detail=f"知识库(ID: {kb_id})不存在或您无权限访问"
+        )
 
     chunks = await retrieve_chunks_for_kb(
         kb_id,

@@ -6,7 +6,10 @@ class UserCrud:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
 
-    async def get_user_by_username(self, username: str) -> User | None:
+    async def get_user_by_username(
+        self, 
+        username: str
+    ) -> User | None:
         """
             根据用户名 获取用户对象
         """
@@ -14,7 +17,10 @@ class UserCrud:
         result = await self.db.execute(stmt)
         return result.scalars().first()
 
-    async def get_user_by_email(self, email: str) -> User | None:
+    async def get_user_by_email(
+        self, 
+        email: str
+    ) -> User | None:
         """
             根据邮箱 获取用户对象
         """
@@ -22,7 +28,10 @@ class UserCrud:
         result = await self.db.execute(stmt)
         return result.scalars().first()
     
-    async def get_user_by_id(self, user_id: int) -> User | None:
+    async def get_user_by_id(
+        self, 
+        user_id: int
+    ) -> User | None:
         """
             根据用户ID 获取用户对象
         """
@@ -30,7 +39,10 @@ class UserCrud:
         result = await self.db.execute(stmt)
         return result.scalars().first()
 
-    async def add_user(self, user: User) -> None:
+    async def add_user(
+        self, 
+        user: User
+    ) -> None:
         """
             添加用户对象到数据库
         """

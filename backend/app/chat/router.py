@@ -17,7 +17,10 @@ from backend.app.chat.service import (
     chat_kb
 )
 
-chat_router = APIRouter(prefix = "/api/knowledge_base", tags = ["chat"])
+chat_router = APIRouter(
+    prefix = "/api/knowledge_base", 
+    tags = ["chat"]
+)
 
 @chat_router.post("/{kb_id}/query", response_model = QueryResponse)
 async def query_kb_endpoint(
@@ -26,7 +29,12 @@ async def query_kb_endpoint(
     cur_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    return await query_kb(kb_id, req, cur_user.id, db)
+    return await query_kb(
+        kb_id, 
+        req, 
+        cur_user.id, 
+        db
+    )
 
 
 @chat_router.post("/{kb_id}/chat", response_model = ChatResponse)
@@ -36,4 +44,9 @@ async def chat_kb_endpoint(
     cur_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    return await chat_kb(kb_id, req, cur_user.id, db)
+    return await chat_kb(
+        kb_id, 
+        req, 
+        cur_user.id, 
+        db
+    )

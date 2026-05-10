@@ -40,11 +40,17 @@ async def upload_kb_documents(
 
     for file in files:
         if not file.filename:
-            raise HTTPException(status_code=400, detail="文件名不能为空")
+            raise HTTPException(
+                status_code=400, 
+                detail="文件名不能为空"
+            )
 
         file_content = await file.read()
         if not file_content:
-            raise HTTPException(status_code=400, detail=f"文件 {file.filename} 为空")
+            raise HTTPException(
+                status_code=400, 
+                detail=f"文件 {file.filename} 为空"
+            )
 
         file_size = len(file_content)
         file_hash = hashlib.sha256(file_content).hexdigest()
@@ -116,7 +122,10 @@ async def process_kb_documents(
         )
 
     if doc.status == "processing":
-        raise HTTPException(status_code = 400, detail = "文档处理中，请勿重复提交。")
+        raise HTTPException(
+            status_code = 400, 
+            detail = "文档处理中，请勿重复提交。"
+        )
 
     # 1. 标记 processing
     doc.status = "processing"
@@ -141,14 +150,23 @@ async def get_kb_documents_status(
     """
     kb = await KbCrud(db).get_owned_kb(user_id, kb_id)
     if not kb:
-        raise HTTPException(status_code= 404, detail = f"知识库(ID:{kb.id})不存在或您无权限访问")
+        raise HTTPException(
+            status_code= 404, 
+            detail = f"知识库(ID:{kb.id})不存在或您无权限访问"
+        )
 
     doc = await DocCrud(db).get_doc_by_id(doc_id)
     if not doc:
-        raise HTTPException(status_code= 404, detail = f"文档(ID:{doc.id})不存在")
+        raise HTTPException(
+            status_code= 404, 
+            detail = f"文档(ID:{doc.id})不存在"
+        )
     
     if doc.knowledge_base_id != kb_id:
-        raise HTTPException(status_code=400,detail="文档不属于当前知识库")
+        raise HTTPException(
+            status_code=400,
+            detail="文档不属于当前知识库"
+        )
 
     return {
         "doc_id": doc.id,

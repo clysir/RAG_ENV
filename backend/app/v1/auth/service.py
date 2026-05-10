@@ -23,7 +23,10 @@ import jwt
 from backend.config.cfg import settings
 
 
-async def user_register(user_in : UserCreate, db: AsyncSession) -> User:
+async def user_register(
+    user_in : UserCreate, 
+    db: AsyncSession
+) -> User:
     """
         用户注册处理函数
     """
@@ -31,10 +34,16 @@ async def user_register(user_in : UserCreate, db: AsyncSession) -> User:
 
     # 检查用户名是否已存在
     if await repo.get_user_by_username(user_in.username):
-        raise ValueError("用户名已存在")
+        raise HTTPException(
+            status_code = 400,
+            detail="用户名已存在"
+        )
     # 检查邮箱是否已存在
     if await repo.get_user_by_email(user_in.email):
-        raise ValueError("邮箱已存在")
+        raise HTTPException(
+            status_code = 400,
+            detail="邮箱已存在"
+        )
     hashed_password = password_hash(user_in.password) # 对密码进行哈希处理
     # 创建用户对象
     user = User(
@@ -49,39 +58,63 @@ async def user_register(user_in : UserCreate, db: AsyncSession) -> User:
     return user
 
 
-async def login_access_token(username: str, password: str, db: AsyncSession) -> Dict[str, Any]:
+async def login_access_token(
+    username: str, 
+    password: str, 
+    db: AsyncSession
+) -> Dict[str, Any]:
     """
         用户登录处理函数
     """
     repo = UserCrud(db)
     user = await repo.get_user_by_username(username)
-    if not user or not password_verify(password, user.hashed_password):
-        raise ValueError("用户名或密码错误")
+    if not user or not password_verify(
+        password, 
+        user.hashed_password
+    ):
+        raise HTTPException(
+            status_code = 400,
+            detail="用户名或密码错误"
+        )
     if not user.is_active:
-        raise ValueError("用户已被禁用")
+        raise HTTPException(
+            status_code = 400,
+            detail="用户已被禁用"
+        )
     
     # 访问令牌过期时间 这里设置为30分钟 后续可以改成配置项
     access_token_expire = timedelta(minutes=30) 
     # 生成访问令牌
     access_token = create_access_token(
-        data = {"sub": user.username}, expires_delta = access_token_expire
+        data = {"sub": user.username}, 
+        expires_delta = access_token_expire
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token, 
+        "token_type": "bearer"
+    }
 
 # 注意这个不是服务层函数 这个函数是一个依赖项 用于获取当前用户
-async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)) -> User:
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), 
+    db: AsyncSession = Depends(get_db)
+) -> User:
     """
         获取当前用户的函数
     """
     #从 JWT Token 中解析出当前用户
     credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
+        status_code = 401,
         detail="无法验证凭据，请检查 Token 是否有效或已过期",
         headers={"WWW-Authenticate": "Bearer"},
     )
     # 解析 JWT Token 获取用户名
     try: 
-        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+        payload = jwt.decode(
+            token, 
+            settings.JWT_SECRET_KEY, 
+            algorithms=[settings.JWT_ALGORITHM]
+        )
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
@@ -95,7 +128,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession
         raise credentials_exception
     if not user.is_active:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code = 401,
             detail="用户未激活",
             headers={"WWW-Authenticate": "Bearer"},
         )

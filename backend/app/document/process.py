@@ -20,6 +20,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 #from langchain_openai import OpenAIEmbeddings
 from langchain_ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
+from backend.config.cfg import settings
 
 # 帮助自动生成 def __init__ (self, xxx) 这些类里面繁琐的函数
 @dataclass
@@ -265,7 +266,7 @@ def get_vector_store(kb_id: int) -> Chroma:
 def add_chunks_to_vector_store(
     kb_id: int,
     chunks: list[ChunkBuildResult],
-    batch_size: int = 1,
+    batch_size: int = 1 
 ) -> None:
     """
     测试版：分批写入 Chroma。

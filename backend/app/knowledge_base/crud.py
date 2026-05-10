@@ -13,23 +13,41 @@ class KbCrud:
         self.db = db
 
 
-    async def get_owned_list_kb(self, user_id: int, skip: int = 0, limit: int = 100) -> List[Knowledge]:
+    async def get_owned_list_kb(
+        self, 
+        user_id: int, 
+        skip: int = 0, 
+        limit: int = 100
+    ) -> List[Knowledge]:
         """
             获取用户自己的知识库列表
         """
-        stmt = select(Knowledge).where(Knowledge.user_id == user_id).offset(skip).limit(limit)
+        stmt = select(Knowledge).where(
+            Knowledge.user_id == user_id
+        ).offset(skip).limit(limit)
         result = await self.db.execute(stmt)
         return result.scalars().all()   
 
-    async def get_owned_kb(self, user_id: int, kb_id: int) -> Knowledge | None:
+    async def get_owned_kb(
+        self, 
+        user_id: int, 
+        kb_id: int
+    ) -> Knowledge | None:
         """
             按用户 与 数据库 id 获取用户自己的知识库
         """
-        stmt = select(Knowledge).where(Knowledge.user_id == user_id, Knowledge.id == kb_id)
+        stmt = select(Knowledge).where(
+            Knowledge.user_id == user_id, 
+            Knowledge.id == kb_id
+        )
         result = await self.db.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def delete_owned_kb(self, user_id: int, kb_id: int) -> bool:
+    async def delete_owned_kb(
+        self, 
+        user_id: int, 
+        kb_id: int
+    ) -> bool:
         """
             删除用户自己的知识库
         """
@@ -43,10 +61,18 @@ class KbCrud:
         await self.db.commit()
         return True
 
-    async def get_owned_kb_details(self, kb_id: int, user_id: int) -> Knowledge | None:
+    async def get_owned_kb_details(
+        self, 
+        kb_id: int, 
+        user_id: int
+    ) -> Knowledge | None:
         """
             获取用户自己的知识库详情 包括文件信息 
         """
-        stmt = select(Knowledge).where(Knowledge.user_id == user_id, Knowledge.id == kb_id).options(selectinload(Knowledge.documents))
+        stmt = select(Knowledge).where(
+            Knowledge.user_id == user_id, 
+            Knowledge.id == kb_id
+        ).options(
+            selectinload(Knowledge.documents))
         result = await self.db.execute(stmt)
         return result.scalars().first()

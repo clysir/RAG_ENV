@@ -34,10 +34,14 @@ async def upload_kb_documents_endpoint(
     cur_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):   
-    try:
-        return await upload_kb_documents(kb_id, [files], cur_user.id, db)
-    except Exception as e:
-        raise e
+    
+    return await upload_kb_documents(
+        kb_id, 
+        [files], #若改成[files] 就可以解决 多文件上传时 swagger无法显示 上传文件格式问题 --> 但这样就会导致只能上传一个文件 
+        cur_user.id, 
+        db
+    )
+
 
 # 文档处理接口 
 @doc_router.post("/{kb_id}/documents/{doc_id}/process",response_model = DocumentProcessResponse)
