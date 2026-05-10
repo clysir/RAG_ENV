@@ -1,9 +1,10 @@
 # 然后导入所有的子模型 (确保文件名和类名匹配你的实际情况)
 from .base import Base
-from .user import User
-from .knowledge import Knowledge
-from .documents import Documents
 from .document_chunks import DocumentChunk
+from .documents import Documents
+from .knowledge import Knowledge
+from .user import User
+
 """
 cly --- 26.4.23 -- 22:20 
     我当前先建 5张表

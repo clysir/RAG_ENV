@@ -54,8 +54,7 @@ class KbCrud:
         kb = await self.get_owned_kb(user_id, kb_id)
         if not kb:
             raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"知识库(ID:{kb_id})不存在或您无权修改"
+            status_code = 404, detail=f"知识库(ID:{kb_id})不存在或您无权修改"
         )
         await self.db.delete(kb)
         await self.db.commit()
@@ -72,7 +71,6 @@ class KbCrud:
         stmt = select(Knowledge).where(
             Knowledge.user_id == user_id, 
             Knowledge.id == kb_id
-        ).options(
-            selectinload(Knowledge.documents))
+        ).options(selectinload(Knowledge.documents))
         result = await self.db.execute(stmt)
         return result.scalars().first()
