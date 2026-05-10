@@ -9,3 +9,5 @@ minio
 data/
 
 __pycache__/
+
+*.ruff
