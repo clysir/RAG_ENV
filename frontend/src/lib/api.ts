@@ -194,12 +194,14 @@ export async function queryKnowledgeBaseApi(params: {
   kbId: number;
   question: string;
   topK: number;
+  documentIds?: number[];
 }) {
   return request<QueryResponse>(`/api/knowledge_base/${params.kbId}/query`, {
     method: "POST",
     body: JSON.stringify({
       question: params.question,
       top_k: params.topK,
+      document_ids: params.documentIds,
     }),
   });
 }
@@ -208,6 +210,7 @@ export async function chatKnowledgeBaseApi(params: {
   kbId: number;
   question: string;
   topK: number;
+  documentIds?: number[];
   presetName?: string;
 }) {
   return request<ChatResponse>(`/api/knowledge_base/${params.kbId}/chat`, {
@@ -215,7 +218,25 @@ export async function chatKnowledgeBaseApi(params: {
     body: JSON.stringify({
       question: params.question,
       top_k: params.topK,
+      document_ids: params.documentIds,
       preset_name: params.presetName || "deepseek_v4_flash",
+    }),
+  });
+}
+
+export async function multiKbChatApi(params: {
+  question: string;
+  kbIds?: number[];
+  documentIds?: number[];
+  topK: number;
+}) {
+  return request<ChatResponse>(`/api/rag/runs/chat`, {
+    method: "POST",
+    body: JSON.stringify({
+      question: params.question,
+      kb_ids: params.kbIds,
+      document_ids: params.documentIds,
+      top_k: params.topK,
     }),
   });
 }

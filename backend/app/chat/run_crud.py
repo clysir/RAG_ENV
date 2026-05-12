@@ -77,7 +77,7 @@ class RagRunCrud:
             stmt = stmt.where(RagRun.status == status)
 
         stmt = (
-            stmt.order_by(RagRun.id.desc())
+            stmt.order_by(RagRun.id.desc()) #按照run.id倒序排列，最新的在前面
             .offset(offset)
             .limit(page_size + 1)
         )
