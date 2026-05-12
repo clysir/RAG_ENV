@@ -4,7 +4,7 @@ from .document_chunks import DocumentChunk
 from .documents import Documents
 from .knowledge import Knowledge
 from .user import User
-
+from .rag_runs import RagRun
 """
 cly --- 26.4.23 -- 22:20 
     我当前先建 5张表

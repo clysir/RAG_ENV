@@ -35,7 +35,7 @@ async def run_process_document_task(
             # 防御性编程 防止用户提交文档之后 在处理过程中 又把之前的文档给删了
             doc = await DocCrud(db).get_doc_by_id(doc_id)
             if not doc:
-                print(f"文档(ID:{doc.id})不存在")
+                print(f"文档(ID:{doc_id})不存在")
                 return
 
             if doc.knowledge_base_id != kb_id:

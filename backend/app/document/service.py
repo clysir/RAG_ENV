@@ -133,12 +133,12 @@ async def get_kb_documents_status(
     kb = await KbCrud(db).get_owned_kb(user_id, kb_id)
     if not kb:
         raise HTTPException(
-            status_code=404, detail=f"知识库(ID:{kb.id})不存在或您无权限访问"
+            status_code=404, detail=f"知识库(ID:{kb_id})不存在或您无权限访问"
         )
 
     doc = await DocCrud(db).get_doc_by_id(doc_id)
     if not doc:
-        raise HTTPException(status_code=404, detail=f"文档(ID:{doc.id})不存在")
+        raise HTTPException(status_code=404, detail=f"文档(ID:{doc_id})不存在")
 
     if doc.knowledge_base_id != kb_id:
         raise HTTPException(status_code=400, detail="文档不属于当前知识库")

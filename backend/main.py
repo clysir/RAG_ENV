@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 import backend.models
 from backend.app.chat.router import chat_router
+from backend.app.chat.run_router import rag_run_router
 from backend.app.document.router import doc_router
 from backend.app.knowledge_base.router import kb_router
 from backend.app.v1.auth.router import auth_router
@@ -49,6 +50,7 @@ app.include_router(auth_router)
 app.include_router(kb_router)
 app.include_router(doc_router)  # 将文档相关的子路由嵌套到知识库路由中
 app.include_router(chat_router)  # 聊天接口路由
+app.include_router(rag_run_router)  # Rag接口路由
 # if __name__ == "__main__":
 #     import uvicorn
 #     uvicorn.run(app, host="127.0.0.1", port=8000, reload = True)
